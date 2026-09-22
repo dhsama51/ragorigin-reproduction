@@ -1,0 +1,142 @@
+[
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "depth": 200,
+    "hidden_segment_number": 41,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "depth": 500,
+    "hidden_segment_number": 101,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "depth": 1000,
+    "hidden_segment_number": 201,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "depth": 2000,
+    "hidden_segment_number": 401,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "depth": 200,
+    "hidden_segment_number": 41,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "depth": 500,
+    "hidden_segment_number": 101,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "depth": 1000,
+    "hidden_segment_number": 201,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "depth": 2000,
+    "hidden_segment_number": 401,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "depth": 200,
+    "hidden_segment_number": 41,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "depth": 500,
+    "hidden_segment_number": 101,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "depth": 1000,
+    "hidden_segment_number": 201,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "depth": 2000,
+    "hidden_segment_number": 401,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "depth": 200,
+    "hidden_segment_number": 41,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "depth": 500,
+    "hidden_segment_number": 101,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "depth": 1000,
+    "hidden_segment_number": 201,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "depth": 2000,
+    "hidden_segment_number": 401,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "depth": 200,
+    "hidden_segment_number": 41,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "depth": 500,
+    "hidden_segment_number": 101,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "depth": 1000,
+    "hidden_segment_number": 201,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "depth": 2000,
+    "hidden_segment_number": 401,
+    "n_iterations": 2,
+    "hidden_poison_reached": false
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "hidden_poison_segment_number": 22,
+    "iterations": [
+      {
+        "i": 1,
+        "n_poisoned_in_segment": 5,
+        "match": true,
+        "cumulative_match": 1,
+        "terminate": false
+      },
+      {
+        "i": 2,
+        "n_poisoned_in_segment": 0,
+        "match": false,
+        "cumulative_match": 1,
+        "terminate": true
+      }
+    ],
+    "final_scope_size": 10,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "hidden_poison_segment_number": 22,
+    "iterations": [
+      {
+        "i": 1,
+        "n_poisoned_in_segment": 5,
+        "match": true,
+        "cumulative_match": 1,
+        "terminate": false
+      },
+      {
+        "i": 2,
+        "n_poisoned_in_segment": 0,
+        "match": false,
+        "cumulative_match": 1,
+        "terminate": true
+      }
+    ],
+    "final_scope_size": 10,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "hidden_poison_segment_number": 22,
+    "iterations": [
+      {
+        "i": 1,
+        "n_poisoned_in_segment": 5,
+        "match": true,
+        "cumulative_match": 1,
+        "terminate": false
+      },
+      {
+        "i": 2,
+        "n_poisoned_in_segment": 0,
+        "match": false,
+        "cumulative_match": 1,
+        "terminate": true
+      }
+    ],
+    "final_scope_size": 10,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "hidden_poison_segment_number": 22,
+    "iterations": [
+      {
+        "i": 1,
+        "n_poisoned_in_segment": 5,
+        "match": true,
+        "cumulative_match": 1,
+        "terminate": false
+      },
+      {
+        "i": 2,
+        "n_poisoned_in_segment": 0,
+        "match": false,
+        "cumulative_match": 1,
+        "terminate": true
+      }
+    ],
+    "final_scope_size": 10,
+    "hidden_poison_reached": false
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "hidden_poison_segment_number": 22,
+    "iterations": [
+      {
+        "i": 1,
+        "n_poisoned_in_segment": 5,
+        "match": true,
+        "cumulative_match": 1,
+        "terminate": false
+      },
+      {
+        "i": 2,
+        "n_poisoned_in_segment": 0,
+        "match": false,
+        "cumulative_match": 1,
+        "terminate": true
+      }
+    ],
+    "final_scope_size": 10,
+    "hidden_poison_reached": false
+  }
+]

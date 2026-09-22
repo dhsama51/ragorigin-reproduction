@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 대용량/재생성 가능한 산출물 (01_build_corpus.py로 재생성 가능, SEED=42로 결정론적)
+data/passage_embeds.npy
+
+# 저자 코드 (scripts/00_clone_author_repo.sh로 직접 클론해서 사용 - 벤더 코드는 커밋하지 않음)
+external/
+
+# 2-5는 아직 보완 중이라 이번 업로드에서 제외
+scripts/06_edge_case_5/
+results/edge_case_5/
+
+# OS/editor
+.DS_Store
+*.swp

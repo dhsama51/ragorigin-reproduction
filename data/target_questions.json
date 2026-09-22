@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What topic were Hayek's next two books going to cover?",
+    "gold_context_id": 7548,
+    "correct_answer": "the liberal order"
+  },
+  {
+    "question": "What was the professions of Joseph Dobrovský?",
+    "gold_context_id": 235,
+    "correct_answer": "linguist and historian"
+  },
+  {
+    "question": "How were Roman camps laid out?",
+    "gold_context_id": 9044,
+    "correct_answer": "standard pattern"
+  },
+  {
+    "question": "Does Melbourne have a high or low dependency on the automobile?",
+    "gold_context_id": 6829,
+    "correct_answer": "high"
+  },
+  {
+    "question": "What did Dominic greatly struggle with?",
+    "gold_context_id": 1051,
+    "correct_answer": "relationship with God"
+  }
+]
