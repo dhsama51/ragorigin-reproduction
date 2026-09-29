@@ -1,0 +1,54 @@
+{
+  "sanity_check": {
+    "mean_iterations": 2.4,
+    "mean_dacc": 1.0,
+    "min_gap": 0.9372759198733753,
+    "max_gap": 1.5827908336096836
+  },
+  "early_termination": {
+    "n_missed": 5,
+    "n": 5
+  },
+  "position_coverage": {
+    "4": {
+      "not_terminated": 1,
+      "mean_iter": 7.6
+    },
+    "5": {
+      "not_terminated": 0,
+      "mean_iter": 2.0
+    },
+    "6": {
+      "not_terminated": 0,
+      "mean_iter": 2.0
+    },
+    "9": {
+      "not_terminated": 1,
+      "mean_iter": 7.6
+    },
+    "10": {
+      "not_terminated": 0,
+      "mean_iter": 2.0
+    },
+    "11": {
+      "not_terminated": 5,
+      "mean_iter": 30.0
+    }
+  },
+  "self_judgment_bias": {
+    "self_mean_iter": 2.4,
+    "sep_mean_iter": 4.0,
+    "self_mean_dacc": 1.0,
+    "sep_mean_dacc": 1.0
+  },
+  "adaptive_termination": {
+    "n": 20,
+    "n_reached": 0,
+    "depths": [
+      200,
+      500,
+      1000,
+      2000
+    ]
+  }
+}
