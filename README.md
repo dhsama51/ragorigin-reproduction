@@ -12,7 +12,7 @@ A lightweight replication and edge-case investigation of [IEEE S&P'26] [*"Who Ta
 |---|---|---|
 | RQ1 | Do scope narrowing and the RS threshold work as the paper describes, at this scale? | **Yes.** Poisoned-text recall in scope = 100%, mean 2.4 iterations, DACC = 1.00 across all 10 events (Fig. 1). |
 | RQ2 | Does early termination cause real misses? | **Yes.** Forcing Match-then-No-match at i=1,2 ends scope narrowing before a poison hidden at segment 22 is ever scanned — 5/5 (Fig. 3). |
-| RQ3 | Is there a specific rank where scope narrowing structurally breaks down? | **Yes, rank = 2K+1.** All 5/5 cases there hit the 30-iteration cap instead of terminating; nearby ranks fail only occasionally, from real LLM judgment noise (Figs. 2, 4). |
+| RQ3 | Is there a specific rank where scope narrowing structurally breaks down? | **Yes, from rank = 2K+1, when no poison sits in the top-K.** All 5/5 cases at rank 11 hit the 30-iteration cap instead of terminating; nearby ranks fail only occasionally, from real LLM judgment noise (Figs. 2, 4). |
 | RQ4 | Does the judgment LLM's identity change detection accuracy or only efficiency? | **Only efficiency.** DACC = 1.00 either way; mean iterations differ (2.40 self vs. 4.00 separate) (Fig. 5). |
 | RQ5 | Can an attacker who knows the system exploit early termination on purpose? | **Yes, completely.** 20/20 cases (5 questions x 4 depths up to rank 2000) evade detection (Fig. 6). |
 
@@ -24,7 +24,7 @@ A lightweight replication and edge-case investigation of [IEEE S&P'26] [*"Who Ta
 - **Target questions**: 5, each with a gold context inside the 10,000-passage corpus (so the benign RAG system can answer correctly).
 - **Attacks**: `targeted` (explicit wrong-answer statement, PoisonedRAG-style) and `dos` (a fixed refusal template as the target answer, Jamming-style), M=5 poisoned texts per question per attack, giving 5 x 2 x 5 = 50 poisoned texts and 5 x 2 = 10 misgeneration events.
 - **Models**: RAG generation LLM and judgment LLM = `Qwen2.5-1.5B-Instruct` (same model, i.e. self-judging) unless noted; proxy LLM for ES/SC/GC = the same `Qwen2.5-1.5B-Instruct`; Finding 3 additionally uses `Llama-3.2-1B-Instruct` as a separate judge.
-- **Algorithm 1 / Eq. 4**: iterate over K=5-sized rank segments; stop once `sum(match) == i/2` — only satisfiable at even i. `results/sanity_check/scope_narrowing_log.json` records every iteration; `results/sanity_check/rs_scores_and_threshold.json` records ES/SC/GC/RS and the K-means verdict for every text in every final scope.
+- **Algorithm 1 / Eq. 4**: iterate over K=5-sized rank segments; stop once `sum(match) == i/2`, i.e. once the numbers of Match and No-match segments are equal — only satisfiable at even i. `results/sanity_check/scope_narrowing_log.json` records every iteration; `results/sanity_check/rs_scores_and_threshold.json` records ES/SC/GC/RS and the K-means verdict for every text in every final scope.
 
 ---
 
@@ -36,14 +36,14 @@ A lightweight replication and edge-case investigation of [IEEE S&P'26] [*"Who Ta
 
 **Figure 1. Sanity check across all 10 misgeneration events.** (a) RS(u) (z-scored within each event's own scope, Eq. 8) for every poisoned (n=5/event) and benign (n=5-15/event) text. (b) The separation margin, min(poisoned RS) - max(benign RS), is positive for every event (range 0.94-1.58), which is why the K-means(k=2) threshold gives DACC = 1.00 in every case. Mean iterations to termination = 2.4; poisoned-text recall within the final scope = 100% (n=50/50). Data: `sanity_check/scope_narrowing_log.json`, `sanity_check/rs_scores_and_threshold.json`.
 
-- All 10 events terminate at i=2 or i=4 (never later), consistent with Eq. 4's parity constraint (see Finding 2).
+- All 10 events terminate at i=2 or i=4 (never later), consistent with Eq. 4's parity constraint (see Fig. 2).
 - The clean per-event separation (Fig. 1b) confirms the paper's claim that ES, SC, and GC jointly create a wide margin, even though this project uses ~1.5B-parameter models rather than GPT-4o-mini / Llama-3.1-8B.
 
 ### 2. Early termination causes a real missed detection
 
 ![Figure 2](figures/fig02_termination_mechanics.png)
 
-**Figure 2. Why Eq. 4's termination condition behaves differently by rank (schematic).** The condition `cumulative Match == i/2` can only be satisfied at even i. If poison sits in segment 1 or 2 (rank <= 10), the first Match happens at i=1 or i=2, and a No-match at the very next iteration closes the gap immediately (terminates at i=2). If poison first appears at an odd iteration (i=3, i.e. rank in [11,15], segment 3) and no further Match occurs, the running total is permanently stuck below i/2 — this is a structural property of Eq. 4, not a bug, and it does not depend on model quality.
+**Figure 2. Why Eq. 4's termination condition behaves differently by rank (schematic).** The condition `cumulative Match == i/2` can only be satisfied at even i. If poison sits in segment 1 or 2 (rank <= 10), either a Match at i=1 is followed by a No-match at i=2, or a No-match at i=1 is balanced by a Match at i=2 — both terminate at i=2. If segment 1 is a No-match and poison first appears at i=3 or later (rank >= 11, segment 3 onward) with no further Match, the Match count can never catch up with the No-match count, so the running total stays below i/2 at every later i, odd or even — this is a structural property of Eq. 4, not a bug, and it does not depend on model quality. (The "(odd)" labels inside the figure are imprecise: a first Match at i=4 fails the same way; the cause is the Match deficit, not the parity of i.)
 
 ![Figure 3](figures/fig03_early_termination.png)
 
@@ -55,7 +55,9 @@ This experiment does not require an adversary; it can happen whenever poison als
 
 ![Figure 4](figures/fig04_position_coverage.png)
 
-**Figure 4. Detection outcome by insertion rank.** A single poisoned text was inserted at rank in {4, 5, 6, 9, 10, 11} = {K-1, K, K+1, 2K-1, 2K, 2K+1} for each of the 5 targeted-attack questions, and Algorithm 1 was run to completion or to a 30-iteration cap. (a) Rank 11 (segment 3, first Match at the odd i=3) hits the cap in 5/5 cases, exactly as Figure 2 predicts. Ranks 4 and 9 (segments 1-2, where the mechanics of Fig. 2 predict clean termination at i=2) still fail in 1/5 cases each — real LLM judgment calls occasionally produce a spurious second Match in a later segment, which prevents the count from closing at i=2. Ranks 5, 6, 10 terminate 5/5. (b) The poison is still included in the final scope in all 30 cases (even the ones that hit the cap), because the cap forces the scope to grow to 150 texts — but "included" here means the algorithm scanned nearly the whole corpus, not that it terminated efficiently. Data: `position_coverage_curve/coverage_curve_result.json`.
+**Figure 4. Detection outcome by insertion rank.** A single poisoned text was inserted at rank in {4, 5, 6, 9, 10, 11} = {K-1, K, K+1, 2K-1, 2K, 2K+1} for each of the 5 targeted-attack questions, and Algorithm 1 was run to completion or to a 30-iteration cap. (a) Rank 11 (segment 3, first Match at i=3) hits the cap in 5/5 cases, exactly as Figure 2 predicts. Ranks 4 and 9 (segments 1-2, where the mechanics of Fig. 2 predict clean termination at i=2) still fail in 1/5 cases each — real LLM judgment calls occasionally produce a spurious second Match in a later segment, which prevents the count from closing at i=2. Ranks 5, 6, 10 terminate 5/5. (b) The poison is still included in the final scope in all 30 cases (even the ones that hit the cap), because the cap forces the scope to grow to 150 texts — but "included" here means the algorithm scanned nearly the whole corpus, not that it terminated efficiently. Data: `position_coverage_curve/coverage_curve_result.json`.
+
+**Scope of this finding.** Unlike the other experiments, segment 1 is judged by the LLM here rather than fixed to Match, and the only poison lies outside the top-K. Under the author's implementation, where segment 1 of a real misgeneration event is fixed to Match, this non-termination cannot occur: the Match count starts ahead and must pass through equality (and terminate) before it can fall behind. This finding is therefore a boundary condition showing a second way Eq. 4's termination rule is fragile; in practice it could arise, for example, when attribution is re-run to find poison remaining after the top-K poisons have been removed (not tested here). Per-iteration Match/No-match judgments were not saved for this experiment (`coverage_curve_result.json` keeps only summary fields), so the Match at i=3 is inferred from the design rather than logged.
 
 The earlier version of this README described the rank=11 failure as purely structural and did not report that ranks 4 and 9 also fail some of the time; the position-by-position breakdown in Figure 4a makes that distinction explicit.
 
@@ -91,7 +93,6 @@ This is the same mechanism as Finding 2, but deliberately engineered: an attacke
 - **Extreme scale-down**: 5 target questions and a 10,000-text corpus, vs. the paper's 5 datasets with 2.7-8.8M texts each and up to 100 collected misgeneration events per (attack, dataset) pair (see the [table below](#default-paper-conditions-vs-this-project)). None of the DACC/FPR/FNR numbers here should be read as comparable to the paper's Table 3.
 - **Only 2 of the paper's 9 default attacks are implemented** (a targeted-answer style and a DoS style), out of PRAGB/PRAGW/ProInject/HijackRAG/LIAR (targeted) and Jamming/BadRAG/Phantom/AgentPoison (DoS); none of the 3 adaptive attacks from the paper's Section 6.4 (benign-text perturbation, poisoned-text perturbation, adversarial SC/GC perturbation) are implemented — Findings 2 and 5 here are a different, scope-narrowing-specific adaptive attack that the paper does not evaluate.
 - **DoS ASR is below the paper's** (Finding above), and no root-cause experiment (e.g. varying model size) was run to confirm the "smaller models resist instruction-only jamming better" hypothesis.
-- **A larger, still-in-progress event-count stability experiment** (more than 10 events, to see whether DACC = 1.00 holds statistically rather than as a 10-event anecdote) is not included in this snapshot.
 
 ## Default Paper Conditions vs. This Project
 
